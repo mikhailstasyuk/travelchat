@@ -23,8 +23,8 @@ help: ## Show this help message
 setup: ## Initial setup - copy env file and create directories
 	@echo "$(GREEN)Setting up environment...$(NC)"
 	@if [ ! -f $(ENV_FILE) ]; then \
-		cp env.example $(ENV_FILE); \
-		echo "$(YELLOW)Created $(ENV_FILE) from env.example. Please update it with your values.$(NC)"; \
+		cp .env.example $(ENV_FILE); \
+		echo "$(YELLOW)Created $(ENV_FILE) from .env.example. Please update it with your values.$(NC)"; \
 	fi
 	@mkdir -p weaviate_data
 

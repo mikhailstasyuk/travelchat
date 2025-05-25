@@ -1,0 +1,77 @@
+# Git
+.git
+.gitignore
+README.md
+LICENSE
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.mypy_cache
+.pytest_cache
+.hypothesis
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+weaviate_data/
+backups/
+*.sqlite
+*.db
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Streamlit config will be copied explicitly
+# .streamlit/
+
+# Env files (will be mounted or passed as env vars)
+.env
+.env.*
+
+# Node modules (if any)
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/

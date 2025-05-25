@@ -1,0 +1,56 @@
+version: '3.4'
+
+services:
+  weaviate:
+    image: semitechnologies/weaviate:1.24.1
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    restart: unless-stopped
+    volumes:
+      - ./weaviate_data:/var/lib/weaviate
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      ENABLE_MODULES: ''
+      CLUSTER_HOSTNAME: 'node1'
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    environment:
+      - WEAVIATE_URL=http://weaviate:8080
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
+    depends_on:
+      - weaviate
+    command: ["sh", "-c", "sleep 10 && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"]
+    volumes:
+      - ./app:/app/app
+      - ./notebooks:/app/notebooks
+
+  streamlit:
+    build: .
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+    environment:
+      - WEAVIATE_URL=http://weaviate:8080
+      - API_URL=http://api:8000
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_ENABLE_CORS=false
+      - STREAMLIT_SERVER_ENABLE_XSRF_PROTECTION=false
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
+    depends_on:
+      - api
+    command: ["sh", "-c", "sleep 15 && streamlit run streamlit_apps/streamlit_app.py --server.port=8501 --server.address=0.0.0.0 --server.headless=true"]
+    volumes:
+      - ./streamlit_apps:/app/streamlit_apps
